@@ -26,7 +26,11 @@ public:
 
     bool operator==(const Matrix& that);
     bool operator!=(const Matrix& that);
+
     Matrix<T> operator=(const Matrix& that);
+
+    Matrix<T> operator+(const Matrix& that) const;
+    Matrix<T> operator-(const Matrix& that) const;
 
     template <typename C> friend std::ostream & operator<< (std::ostream &out, const Matrix<C>& matrix);
     template <typename C> friend std::istream & operator>> (std::istream &in, const Matrix<C>& matrix);
@@ -163,6 +167,36 @@ void Matrix<T>::assign(const Matrix<T> &that) {
             this->values[row][col] = that.values[row][col];
         }
     }
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::operator+(const Matrix& that) const{
+    if (!Matrix::compare_size(*this, that))
+    {
+        throw std::logic_error("Matrix sizes are different");
+    }
+    Matrix<T> result(this->row_count, this->col_count);
+    for (int row = 0; row < row_count; ++row) {
+        for (int col = 0; col < col_count; ++col) {
+            result.values[row][col] = this->values[row][col] + that.values[row][col];
+        }
+    }
+    return result;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::operator-(const Matrix& that) const{
+    if (!Matrix::compare_size(*this, that))
+    {
+        throw std::logic_error("Matrix sizes are different");
+    }
+    Matrix<T> result(this->row_count, this->col_count);
+    for (int row = 0; row < row_count; ++row) {
+        for (int col = 0; col < col_count; ++col) {
+            result.values[row][col] = this->values[row][col] - that.values[row][col];
+        }
+    }
+    return result;
 }
 
 

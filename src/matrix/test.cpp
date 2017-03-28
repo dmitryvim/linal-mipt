@@ -19,6 +19,14 @@ void next_test(const char * test_name)
     std::cout << std::endl << "Test " << ++__test_counter << ": " << test_name << std::endl;
 }
 
+Matrix<int> matrix2x2_from_string(const char * line)
+{
+    std::stringstream stringstream(line);
+    Matrix<int> matrix(2, 2);
+    stringstream >> matrix;
+    return matrix;
+}
+
 void test_runnable() {
     Matrix<int> matrix = Matrix<int>::random(2, 2);
     std::cout << matrix << std::endl;
@@ -57,6 +65,18 @@ void test_set()
 
 }
 
+void test_plus_minus()
+{
+    Matrix<int> matrix1 = matrix2x2_from_string("2 5 23 7");
+    Matrix<int> matrix2 = matrix2x2_from_string("3 1 2 3");
+    Matrix<int> matrix_sum = matrix2x2_from_string("5 6 25 10");
+    Matrix<int> matrix_dif = matrix2x2_from_string("-1 4 21 4");
+
+    assert(matrix1 + matrix2 == matrix_sum, "error on sum matrix");
+    assert(matrix1 - matrix2 == matrix_dif, "error on dif matrix");
+}
+
+
 int main() {
     next_test("print random 2x2 matrix two times");
     test_runnable();
@@ -72,4 +92,7 @@ int main() {
 
     next_test("matrix1 = matrix2");
     test_set();
+
+    next_test("sum and dif matrix");
+    test_plus_minus();
 }
