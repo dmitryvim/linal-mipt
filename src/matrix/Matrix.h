@@ -15,10 +15,14 @@ private:
 
     void set_sizes(const int row_count, const int col_count);
     void free();
+    static bool compare_size(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+    static bool compare(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
 public:
     Matrix(const int row_count, const int col_count);
     Matrix(const Matrix &that);
     ~Matrix();
+
+    bool operator==(const Matrix& that);
 
     void print();
 };
@@ -75,6 +79,33 @@ void Matrix<T>::print() {
         }
         std::cout << std::endl;
     }
+}
+
+template <typename T>
+bool Matrix<T>::compare(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
+    if (!compare_size(matrix1, matrix2))
+    {
+        return false;
+    }
+    for (int row = 0; row < matrix1.row_count; ++row) {
+        for (int col = 0; col < matrix1.col_count; ++col) {
+            if (matrix1.values[row][col] != matrix2.values[row][col])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+template <typename T>
+bool Matrix<T>::compare_size(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
+    return (matrix1.row_count == matrix2.row_count) && (matrix1.col_count == matrix2.col_count);
+}
+
+template <typename T>
+bool Matrix<T>::operator==(const Matrix<T> &that) {
+    return compare(*this, that);
 }
 
 
