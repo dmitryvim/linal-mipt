@@ -44,6 +44,11 @@ public:
 
     Matrix<T> operator-(const Matrix &that) const;
 
+    Matrix<T> operator*(const T &coefficient) const;
+
+    template<typename C>
+    friend Matrix<C> operator*(const C &coefficient, const Matrix<C> matrix);
+
     template<typename C>
     friend std::ostream &operator<<(std::ostream &out, const Matrix<C> &matrix);
 
@@ -225,6 +230,22 @@ int Matrix<T>::rows_size() const {
 template<typename T>
 int Matrix<T>::columns_size() const {
     return col_count;
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::operator*(const T &coefficient) const {
+    Matrix<T> result(this->row_count, this->col_count);
+    for (int row = 0; row < row_count; ++row) {
+        for (int col = 0; col < col_count; ++col) {
+            result.values[row][col] = this->values[row][col] * coefficient;
+        }
+    }
+    return result;
+}
+
+template<typename C>
+Matrix<C> operator*(const C &coefficient, const Matrix<C> matrix) {
+    return matrix * coefficient;
 }
 
 

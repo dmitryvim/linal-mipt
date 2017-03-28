@@ -23,6 +23,12 @@ public:
 
     SquareMatrix<T> operator-(const SquareMatrix<T> &that) const;
 
+    SquareMatrix<T> operator*(const T &coefficient) const;
+
+    template<typename C>
+    friend SquareMatrix<C> operator*(const C &coefficient, const SquareMatrix<C> matrix);
+
+
     int size() const;
 };
 
@@ -64,6 +70,16 @@ SquareMatrix<T> SquareMatrix<T>::operator-(const SquareMatrix<T> &that) const {
 template<typename T>
 int SquareMatrix<T>::size() const {
     return this->columns_size();
+}
+
+template<typename T>
+SquareMatrix<T> SquareMatrix<T>::operator*(const T &coefficient) const {
+    return Matrix<T>::operator*(coefficient);
+}
+
+template<typename C>
+SquareMatrix<C> operator*(const C &coefficient, const SquareMatrix<C> matrix) {
+    return matrix * coefficient;
 }
 
 
