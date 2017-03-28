@@ -24,8 +24,16 @@ void test_runnable() {
     assert(true, "Hope, zero 2x2 matrix was printed");
 }
 
-int main() {
+void test_equals() {
+    Matrix<int> matrix1(2, 2);
+    Matrix<int> matrix2(2, 2);
+    assert(matrix1 == matrix2, "error on compare two equals zero matrix");
+}
 
+int main() {
     next_test("print zero 2x2 matrix");
     test_runnable();
+
+    next_test("equals");
+    test_equals();
 }
