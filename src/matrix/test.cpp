@@ -88,6 +88,15 @@ void test_square_matrix() {
     assert(square - matrix == matrix_dif, "square and 2x2 matrix dif error");
 }
 
+void test_mult_square_matrix() {
+    SquareMatrix<int> matrix = matrix2x2_from_string("1 2 3 4");
+    int coef = 3;
+    SquareMatrix<int> matrix_mult = matrix2x2_from_string("3 6 9 12");
+    assert(coef * matrix == matrix_mult, "error on coefficient matrix multiplication");
+    assert(matrix * coef == matrix_mult, "error on matrix coefficient multiplication");
+
+}
+
 int main() {
     next_test("print random 2x2 matrix two times");
     test_runnable();
@@ -109,4 +118,7 @@ int main() {
 
     next_test("square matrix");
     test_square_matrix();
+
+    next_test("mult square matrix");
+    test_mult_square_matrix();
 }
