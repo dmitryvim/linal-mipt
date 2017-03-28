@@ -23,8 +23,10 @@ public:
     ~Matrix();
 
     bool operator==(const Matrix& that);
+    bool operator!=(const Matrix& that);
 
     void print();
+    static Matrix<int> random(const int row_count, const int col_count);
 };
 
 template <typename T>
@@ -106,6 +108,22 @@ bool Matrix<T>::compare_size(const Matrix<T> &matrix1, const Matrix<T> &matrix2)
 template <typename T>
 bool Matrix<T>::operator==(const Matrix<T> &that) {
     return compare(*this, that);
+}
+
+template <>
+Matrix<int> Matrix<int>::random(const int row_count, const int col_count) {
+    Matrix<int> matrix(row_count, col_count);
+    for (int row = 0; row < row_count; ++row) {
+        for (int col = 0; col < col_count; ++col) {
+            matrix.values[row][col] = rand() % 1001 - 500;
+        }
+    }
+    return matrix;
+}
+
+template <typename T>
+bool Matrix<T>::operator!=(const Matrix &that) {
+    return !compare(*this, that);
 }
 
 
