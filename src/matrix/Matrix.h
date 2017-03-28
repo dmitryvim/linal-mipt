@@ -46,6 +46,8 @@ public:
 
     Matrix<T> operator*(const T &coefficient) const;
 
+    T *operator[](const int row); // matrix[i][j]
+
     template<typename C>
     friend Matrix<C> operator*(const C &coefficient, const Matrix<C> matrix);
 
@@ -53,7 +55,7 @@ public:
     friend std::ostream &operator<<(std::ostream &out, const Matrix<C> &matrix);
 
     template<typename C>
-    friend std::istream &operator>>(std::istream &in, const Matrix<C> &matrix);
+    friend std::istream &operator>>(std::istream &in, Matrix<C> &matrix);
 
     virtual void print();
 
@@ -165,7 +167,7 @@ std::ostream &operator<<(std::ostream &out, const Matrix<C> &matrix) {
 }
 
 template<typename C>
-std::istream &operator>>(std::istream &in, const Matrix<C> &matrix) {
+std::istream &operator>>(std::istream &in, Matrix<C> &matrix) {
     for (int row = 0; row < matrix.row_count; ++row) {
         for (int col = 0; col < matrix.col_count; ++col) {
             in >> matrix.values[row][col];
@@ -246,6 +248,11 @@ Matrix<T> Matrix<T>::operator*(const T &coefficient) const {
 template<typename C>
 Matrix<C> operator*(const C &coefficient, const Matrix<C> matrix) {
     return matrix * coefficient;
+}
+
+template<typename T>
+T *Matrix::operator[](const int row) {
+    return this->values[row];
 }
 
 

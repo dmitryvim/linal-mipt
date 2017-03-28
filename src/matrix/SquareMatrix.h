@@ -33,9 +33,7 @@ public:
 };
 
 template<typename T>
-SquareMatrix<T>::SquareMatrix(const int size) {
-    Matrix<T>::Matrix(size, size);
-}
+SquareMatrix<T>::SquareMatrix(const int size): Matrix(size, size) {}
 
 template<typename T>
 void SquareMatrix<T>::assign(const Matrix<T> &that) {
