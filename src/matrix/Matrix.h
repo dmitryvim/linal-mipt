@@ -14,6 +14,7 @@ private:
     int col_count;
     T** values;
 
+protected:
     void set_sizes(const int row_count, const int col_count);
     void free();
     void assign(const Matrix& that);

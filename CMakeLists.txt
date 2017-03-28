@@ -4,7 +4,7 @@ project(linal_mipt)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES src/main.cpp)
-set(MATRIX_FILES src/matrix/Matrix.h)
+set(MATRIX_FILES src/matrix/Matrix.h src/matrix/SquareMatrix.h)
 set(MATRIX_TEST_FILES src/matrix/test.cpp)
 
 add_executable(linal_mipt ${SOURCE_FILES} ${MATRIX_FILES})
