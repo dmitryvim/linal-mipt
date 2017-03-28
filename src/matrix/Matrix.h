@@ -16,6 +16,7 @@ private:
 
     void set_sizes(const int row_count, const int col_count);
     void free();
+    void assign(const Matrix& that);
     static bool compare_size(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
     static bool compare(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
 public:
@@ -25,6 +26,7 @@ public:
 
     bool operator==(const Matrix& that);
     bool operator!=(const Matrix& that);
+    Matrix<T> operator=(const Matrix& that);
 
     template <typename C> friend std::ostream & operator<< (std::ostream &out, const Matrix<C>& matrix);
     template <typename C> friend std::istream & operator>> (std::istream &in, const Matrix<C>& matrix);
@@ -55,12 +57,7 @@ void Matrix<T>::set_sizes(const int row_count, const int col_count) {
 
 template <typename T>
 Matrix<T>::Matrix(const Matrix &that) {
-    set_sizes(that.row_count, that.col_count);
-    for (int row = 0; row < row_count; ++row) {
-        for (int col = 0; col < col_count; ++col) {
-            this->values[row][col] = that.values[row][col];
-        }
-    }
+    assign(that);
 }
 
 template <typename T>
@@ -149,6 +146,23 @@ std::istream &operator>>(std::istream &in, const Matrix<C> &matrix) {
         }
     }
     return in;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::operator=(const Matrix<T> &that) {
+    free();
+    assign(that);
+    return *this;
+}
+
+template <typename T>
+void Matrix<T>::assign(const Matrix<T> &that) {
+    set_sizes(that.row_count, that.col_count);
+    for (int row = 0; row < row_count; ++row) {
+        for (int col = 0; col < col_count; ++col) {
+            this->values[row][col] = that.values[row][col];
+        }
+    }
 }
 
 

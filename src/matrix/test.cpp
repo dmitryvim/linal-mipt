@@ -48,6 +48,15 @@ void test_cin()
     assert(origin_matrix == read_matrix, "error on read and write matrix via stream");
 }
 
+void test_set()
+{
+    Matrix<int> matrix1 = Matrix<int>::random(2, 2);
+    Matrix<int> matrix2 = Matrix<int>::random(2, 2);
+    matrix1 = matrix2;
+    assert(matrix1 == matrix2, "error on matrix1 = matrix2");
+
+}
+
 int main() {
     next_test("print random 2x2 matrix two times");
     test_runnable();
@@ -60,4 +69,7 @@ int main() {
 
     next_test("stream work with matrixes, input 2x2 matrix values");
     test_cin();
+
+    next_test("matrix1 = matrix2");
+    test_set();
 }
