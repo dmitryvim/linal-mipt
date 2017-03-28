@@ -23,6 +23,10 @@ protected:
 
     virtual void assign(const Matrix &that);
 
+    virtual void swap_rows(const int row1, const int row2);
+
+    void set(const int row, const int col, const T value);
+
     static bool compare_size(const Matrix<T> &matrix1, const Matrix<T> &matrix2);
 
     static bool compare(const Matrix<T> &matrix1, const Matrix<T> &matrix2);
@@ -47,6 +51,8 @@ public:
     Matrix<T> operator*(const T &coefficient) const;
 
     T *operator[](const int row); // matrix[i][j]
+
+    T get(const int row, const int col) const;
 
     template<typename C>
     friend Matrix<C> operator*(const C &coefficient, const Matrix<C> matrix);
@@ -251,8 +257,23 @@ Matrix<C> operator*(const C &coefficient, const Matrix<C> matrix) {
 }
 
 template<typename T>
-T *Matrix::operator[](const int row) {
+T *Matrix<T>::operator[](const int row) {
     return this->values[row];
+}
+
+template<typename T>
+T Matrix<T>::get(const int row, const int col) const {
+    return this->values[row][col];
+}
+
+template<typename T>
+void Matrix<T>::swap_rows(const int row1, const int row2) {
+    std::swap(this->values[row1], this->values[row2]);
+}
+
+template<typename T>
+void Matrix<T>::set(const int row, const int col, const T value) {
+    this->values[row][col] = value;
 }
 
 

@@ -97,6 +97,14 @@ void test_mult_square_matrix() {
 
 }
 
+void test_up_triangle() {
+    std::stringstream stringstream("1 1 1 \n 1 0 1 \n 0 1 1");
+    SquareMatrix<double> matrix(3);
+    stringstream >> matrix;
+    SquareMatrix<double> up_matrix = matrix.get_up_triangle();
+    std::cout << matrix << std::endl << up_matrix;
+}
+
 int main() {
     next_test("print random 2x2 matrix two times");
     test_runnable();
@@ -121,4 +129,7 @@ int main() {
 
     next_test("mult square matrix");
     test_mult_square_matrix();
+
+    next_test("check up triangle");
+    test_up_triangle();
 }
