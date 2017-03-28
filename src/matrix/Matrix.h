@@ -5,6 +5,7 @@
 #ifndef LINAL_MIPT_MATRIX_H
 #define LINAL_MIPT_MATRIX_H
 
+#include <iostream>
 
 template <typename T>
 class Matrix {
@@ -24,6 +25,9 @@ public:
 
     bool operator==(const Matrix& that);
     bool operator!=(const Matrix& that);
+
+    template <typename C> friend std::ostream & operator<< (std::ostream &out, const Matrix<C>& matrix);
+    template <typename C> friend std::istream & operator>> (std::istream &in, const Matrix<C>& matrix);
 
     void print();
     static Matrix<int> random(const int row_count, const int col_count);
@@ -124,6 +128,27 @@ Matrix<int> Matrix<int>::random(const int row_count, const int col_count) {
 template <typename T>
 bool Matrix<T>::operator!=(const Matrix &that) {
     return !compare(*this, that);
+}
+
+template <typename C>
+std::ostream & operator<<(std::ostream &out, const Matrix<C> &matrix) {
+    for (int row = 0; row < matrix.row_count; ++row) {
+        for (int col = 0; col < matrix.col_count; ++col) {
+            out << matrix.values[row][col] << " ";
+        }
+        out << std::endl;
+    }
+    return out;
+}
+
+template<typename C>
+std::istream &operator>>(std::istream &in, const Matrix<C> &matrix) {
+    for (int row = 0; row < matrix.row_count; ++row) {
+        for (int col = 0; col < matrix.col_count; ++col) {
+            in >> matrix.values[row][col];
+        }
+    }
+    return in;
 }
 
 
