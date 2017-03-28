@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include "Matrix.h"
+#include "SquareMatrix.h"
 
 int __test_counter = 0;
 
@@ -76,6 +77,16 @@ void test_plus_minus()
     assert(matrix1 - matrix2 == matrix_dif, "error on dif matrix");
 }
 
+void test_square_matrix() {
+    Matrix<int> matrix = matrix2x2_from_string("1 2 3 4");
+    SquareMatrix<int> square = matrix;
+    Matrix<int> matrix_sum = matrix2x2_from_string("2 4 6 8");
+    SquareMatrix<int> matrix_dif = matrix2x2_from_string("0 0 0 0");
+
+    assert(square == matrix, "square and 2x2 matrix are equals");
+    assert(square + matrix == matrix_sum, "square and 2x2 matrix sum error");
+    assert(square - matrix == matrix_dif, "square and 2x2 matrix dif error");
+}
 
 int main() {
     next_test("print random 2x2 matrix two times");
@@ -95,4 +106,7 @@ int main() {
 
     next_test("sum and dif matrix");
     test_plus_minus();
+
+    next_test("square matrix");
+    test_square_matrix();
 }
