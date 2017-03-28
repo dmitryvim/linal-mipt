@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <sstream>
 #include "Matrix.h"
 
 int __test_counter = 0;
@@ -20,6 +21,7 @@ void next_test(const char * test_name)
 
 void test_runnable() {
     Matrix<int> matrix = Matrix<int>::random(2, 2);
+    std::cout << matrix << std::endl;
     matrix.print();
     assert(true, "Hope, zero 2x2 matrix was printed");
 }
@@ -36,8 +38,18 @@ void test_not_equals() {
     assert(matrix1 != matrix2, "error on compare two not equals zero matrix");
 }
 
+void test_cin()
+{
+    Matrix<int> origin_matrix = Matrix<int>::random(2, 2);
+    std::stringstream string;
+    string << origin_matrix;
+    Matrix<int> read_matrix(2, 2);
+    string >> read_matrix;
+    assert(origin_matrix == read_matrix, "error on read and write matrix via stream");
+}
+
 int main() {
-    next_test("print random 2x2 matrix");
+    next_test("print random 2x2 matrix two times");
     test_runnable();
 
     next_test("equals");
@@ -45,4 +57,7 @@ int main() {
 
     next_test("not equals");
     test_not_equals();
+
+    next_test("stream work with matrixes, input 2x2 matrix values");
+    test_cin();
 }
