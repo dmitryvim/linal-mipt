@@ -7,40 +7,59 @@
 
 #include <iostream>
 
-template <typename T>
+template<typename T>
 class Matrix {
 private:
     int row_count;
     int col_count;
-    T** values;
+    T **values;
 
 protected:
-    void set_sizes(const int row_count, const int col_count);
-    void free();
-    void assign(const Matrix& that);
-    static bool compare_size(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
-    static bool compare(const Matrix<T>& matrix1, const Matrix<T>& matrix2);
+    Matrix();
+
+    virtual void set_sizes(const int row_count, const int col_count);
+
+    virtual void free_values();
+
+    virtual void assign(const Matrix &that);
+
+    static bool compare_size(const Matrix<T> &matrix1, const Matrix<T> &matrix2);
+
+    static bool compare(const Matrix<T> &matrix1, const Matrix<T> &matrix2);
+
 public:
     Matrix(const int row_count, const int col_count);
+
     Matrix(const Matrix &that);
-    ~Matrix();
 
-    bool operator==(const Matrix& that);
-    bool operator!=(const Matrix& that);
+    virtual ~Matrix();
 
-    Matrix<T> operator=(const Matrix& that);
+    virtual bool operator==(const Matrix &that);
 
-    Matrix<T> operator+(const Matrix& that) const;
-    Matrix<T> operator-(const Matrix& that) const;
+    virtual bool operator!=(const Matrix &that);
 
-    template <typename C> friend std::ostream & operator<< (std::ostream &out, const Matrix<C>& matrix);
-    template <typename C> friend std::istream & operator>> (std::istream &in, const Matrix<C>& matrix);
+    Matrix<T> operator=(const Matrix &that);
 
-    void print();
+    Matrix<T> operator+(const Matrix &that) const;
+
+    Matrix<T> operator-(const Matrix &that) const;
+
+    template<typename C>
+    friend std::ostream &operator<<(std::ostream &out, const Matrix<C> &matrix);
+
+    template<typename C>
+    friend std::istream &operator>>(std::istream &in, const Matrix<C> &matrix);
+
+    virtual void print();
+
     static Matrix<int> random(const int row_count, const int col_count);
+
+    int rows_size() const;
+
+    int columns_size() const;
 };
 
-template <typename T>
+template<typename T>
 Matrix<T>::Matrix(const int row_count, const int col_count) {
     set_sizes(row_count, col_count);
     for (int row = 0; row < row_count; ++row) {
@@ -50,36 +69,35 @@ Matrix<T>::Matrix(const int row_count, const int col_count) {
     }
 }
 
-template <typename T>
+template<typename T>
 void Matrix<T>::set_sizes(const int row_count, const int col_count) {
     this->row_count = row_count;
     this->col_count = col_count;
-    this->values = new T*[row_count];
+    this->values = new T *[row_count];
     for (int row = 0; row < row_count; ++row) {
         this->values[row] = new T[col_count];
     }
 }
 
-template <typename T>
+template<typename T>
 Matrix<T>::Matrix(const Matrix &that) {
     assign(that);
 }
 
-template <typename T>
+template<typename T>
 Matrix<T>::~Matrix() {
-    free();
+    free_values();
 }
 
-template <typename T>
-void Matrix<T>::free() {
-    for (int row = 0; row < row_count; ++row)
-    {
-        delete []this->values[row];
+template<typename T>
+void Matrix<T>::free_values() {
+    for (int row = 0; row < row_count; ++row) {
+        delete[]this->values[row];
     }
-    delete []this->values;
+    delete[]this->values;
 }
 
-template <typename T>
+template<typename T>
 void Matrix<T>::print() {
     for (int row = 0; row < row_count; ++row) {
         for (int col = 0; col < col_count; ++col) {
@@ -89,16 +107,14 @@ void Matrix<T>::print() {
     }
 }
 
-template <typename T>
+template<typename T>
 bool Matrix<T>::compare(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
-    if (!compare_size(matrix1, matrix2))
-    {
+    if (!compare_size(matrix1, matrix2)) {
         return false;
     }
     for (int row = 0; row < matrix1.row_count; ++row) {
         for (int col = 0; col < matrix1.col_count; ++col) {
-            if (matrix1.values[row][col] != matrix2.values[row][col])
-            {
+            if (matrix1.values[row][col] != matrix2.values[row][col]) {
                 return false;
             }
         }
@@ -106,17 +122,17 @@ bool Matrix<T>::compare(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
     return true;
 }
 
-template <typename T>
+template<typename T>
 bool Matrix<T>::compare_size(const Matrix<T> &matrix1, const Matrix<T> &matrix2) {
     return (matrix1.row_count == matrix2.row_count) && (matrix1.col_count == matrix2.col_count);
 }
 
-template <typename T>
+template<typename T>
 bool Matrix<T>::operator==(const Matrix<T> &that) {
     return compare(*this, that);
 }
 
-template <>
+template<>
 Matrix<int> Matrix<int>::random(const int row_count, const int col_count) {
     Matrix<int> matrix(row_count, col_count);
     for (int row = 0; row < row_count; ++row) {
@@ -127,13 +143,13 @@ Matrix<int> Matrix<int>::random(const int row_count, const int col_count) {
     return matrix;
 }
 
-template <typename T>
+template<typename T>
 bool Matrix<T>::operator!=(const Matrix &that) {
     return !compare(*this, that);
 }
 
-template <typename C>
-std::ostream & operator<<(std::ostream &out, const Matrix<C> &matrix) {
+template<typename C>
+std::ostream &operator<<(std::ostream &out, const Matrix<C> &matrix) {
     for (int row = 0; row < matrix.row_count; ++row) {
         for (int col = 0; col < matrix.col_count; ++col) {
             out << matrix.values[row][col] << " ";
@@ -153,14 +169,14 @@ std::istream &operator>>(std::istream &in, const Matrix<C> &matrix) {
     return in;
 }
 
-template <typename T>
+template<typename T>
 Matrix<T> Matrix<T>::operator=(const Matrix<T> &that) {
-    free();
+    free_values();
     assign(that);
     return *this;
 }
 
-template <typename T>
+template<typename T>
 void Matrix<T>::assign(const Matrix<T> &that) {
     set_sizes(that.row_count, that.col_count);
     for (int row = 0; row < row_count; ++row) {
@@ -170,10 +186,9 @@ void Matrix<T>::assign(const Matrix<T> &that) {
     }
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::operator+(const Matrix& that) const{
-    if (!Matrix::compare_size(*this, that))
-    {
+template<typename T>
+Matrix<T> Matrix<T>::operator+(const Matrix &that) const {
+    if (!Matrix::compare_size(*this, that)) {
         throw std::logic_error("Matrix sizes are different");
     }
     Matrix<T> result(this->row_count, this->col_count);
@@ -185,10 +200,9 @@ Matrix<T> Matrix<T>::operator+(const Matrix& that) const{
     return result;
 }
 
-template <typename T>
-Matrix<T> Matrix<T>::operator-(const Matrix& that) const{
-    if (!Matrix::compare_size(*this, that))
-    {
+template<typename T>
+Matrix<T> Matrix<T>::operator-(const Matrix &that) const {
+    if (!Matrix::compare_size(*this, that)) {
         throw std::logic_error("Matrix sizes are different");
     }
     Matrix<T> result(this->row_count, this->col_count);
@@ -198,6 +212,19 @@ Matrix<T> Matrix<T>::operator-(const Matrix& that) const{
         }
     }
     return result;
+}
+
+template<typename T>
+Matrix<T>::Matrix() {}
+
+template<typename T>
+int Matrix<T>::rows_size() const {
+    return row_count;
+}
+
+template<typename T>
+int Matrix<T>::columns_size() const {
+    return col_count;
 }
 
 

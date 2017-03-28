@@ -7,22 +7,64 @@
 
 #include "Matrix.h"
 
-template <typename T>
-class SquareMatrix: protected Matrix<T>
-{
+template<typename T>
+class SquareMatrix : public Matrix<T> {
+protected:
+    void assign(const Matrix<T> &that) override;
+
+public:
     SquareMatrix(const int size);
-    SquareMatrix(const SquareMatrix &that);
-    SquareMatrix(const Matrix &that);
-    ~SquareMatrix();
 
-    bool operator==(const Matrix& that);
-    bool operator!=(const Matrix& that);
+    SquareMatrix(const Matrix<T> &that);
 
-    SquareMatrix<T> operator=(const SquareMatrix& that);
+    SquareMatrix<T> operator=(const SquareMatrix<T> &that);
 
-    SquareMatrix<T> operator+(const SquareMatrix& that) const;
-    SquareMatrix<T> operator-(const SquareMatrix& that) const;
+    SquareMatrix<T> operator+(const SquareMatrix<T> &that) const;
+
+    SquareMatrix<T> operator-(const SquareMatrix<T> &that) const;
+
+    int size() const;
 };
+
+template<typename T>
+SquareMatrix<T>::SquareMatrix(const int size) {
+    Matrix<T>::Matrix(size, size);
+}
+
+template<typename T>
+void SquareMatrix<T>::assign(const Matrix<T> &that) {
+    if (that.rows_size() != that.columns_size()) {
+        throw std::logic_error("matrix is not square");
+    }
+    Matrix<T>::assign(that);
+}
+
+template<typename T>
+SquareMatrix<T>::SquareMatrix(const Matrix<T> &that) {
+    this->assign(that);
+}
+
+template<typename T>
+SquareMatrix<T> SquareMatrix<T>::operator=(const SquareMatrix<T> &that) {
+    this->free_values();
+    this->assign(that);
+    return *this;
+}
+
+template<typename T>
+SquareMatrix<T> SquareMatrix<T>::operator+(const SquareMatrix<T> &that) const {
+    return Matrix<T>::operator+(that);
+}
+
+template<typename T>
+SquareMatrix<T> SquareMatrix<T>::operator-(const SquareMatrix<T> &that) const {
+    return Matrix<T>::operator-(that);
+}
+
+template<typename T>
+int SquareMatrix<T>::size() const {
+    return this->columns_size();
+}
 
 
 #endif //LINAL_MIPT_SQUAREMATRIX_H
